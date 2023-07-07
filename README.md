@@ -1,2 +1,2 @@
-# Potatoes
- GGJ 2023 roots
+# Taking Roots
+ Design and development of a 2D Racing Platformer Video game
