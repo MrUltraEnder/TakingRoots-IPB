@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     {
         if (DeadPlayers == 2)
         {
+            DeadPlayers = 0;
             OnLevelChange.Invoke();
         }
     }

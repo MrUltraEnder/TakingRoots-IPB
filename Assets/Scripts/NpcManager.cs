@@ -6,6 +6,7 @@ using TMPro;
 public class NpcManager : MonoBehaviour
 {
     public Dictionary<string, int> PedidoBandejaVegetalesActiva = new Dictionary<string, int>();
+    private Dictionary<string, bool> Skip = new Dictionary<string, bool>();
     [SerializeField] private TextMeshProUGUI textoPedido;
     [Header("NPC's")]
     [SerializeField] private GameObject npcClaseMedia;
@@ -25,13 +26,21 @@ public class NpcManager : MonoBehaviour
     void Start()
     {
         CrearNPC();
-
+        Skip.Add("player1", false);
+        Skip.Add("player2", false);
     }
 
     // Update is called once per frame
     void Update()
     {
         textoPedido.text = "\nNabos: " + PedidoBandejaVegetalesActiva["nabo"] + "\nRábanos: " + PedidoBandejaVegetalesActiva["rábano"] + "\nPapas: " + PedidoBandejaVegetalesActiva["papa"];
+        if (Skip["player1"] == true && Skip["player2"] == true)
+        {
+            SiguienteNPC();
+            Skip["player1"] = false;
+            Skip["player2"] = false;
+        }
+
     }
     public void SiguienteNPC()
     {
@@ -70,6 +79,12 @@ public class NpcManager : MonoBehaviour
         {
             Instantiate(npcClaseAlta, new Vector3(0, 0, 0), Quaternion.identity);
         }
-
+    }
+    public void skipear(string player)
+    {
+        if (Skip[player] == false)
+        {
+            Skip[player] = true;
+        }
     }
 }

@@ -65,7 +65,6 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_inTest) return;
 
         if (SettingsActivo) return;
         if (Interact()) ActivarBoton();
@@ -76,6 +75,7 @@ public class UIManager : MonoBehaviour
             _pantallaDeSeleccion = false;
 
         }
+        if (_inTest) return;
         if (!_pantallaDeSeleccion)
             return;
         if (timer.tiempo > 0)
@@ -176,7 +176,8 @@ public class UIManager : MonoBehaviour
     }
     public void SetLapsCount(int laps)
     {
-        _LapsCount.text = laps.ToString() + "/3";
+        if (_LapsCount != null)
+            _LapsCount.text = laps.ToString() + "/3";
     }
 
     #region input Management

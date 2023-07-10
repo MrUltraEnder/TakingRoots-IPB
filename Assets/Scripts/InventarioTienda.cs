@@ -8,8 +8,9 @@ using MoreMountains.Feedbacks;
 public class InventarioTienda : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI dinero;
+    [SerializeField] private Slider _slider;
     [SerializeField] private InventoryScriptableObject inventorySO;
-    private MMF_MMGameEvent nextNPC;
+
     [SerializeField] private TextMeshProUGUI textoInventario;
 
     [Header("Bandeja de vegetales")]
@@ -21,22 +22,36 @@ public class InventarioTienda : MonoBehaviour
     [SerializeField] private Sprite papa;
     [SerializeField] private GameObject prefabUIVegetal;
 
+    [Header("Inventario")]
+    [SerializeField] private TextMeshProUGUI _CantidadNabos;
+    [SerializeField] private TextMeshProUGUI _CantidadRabanos;
+    [SerializeField] private TextMeshProUGUI _CantidadPapas;
     private Dictionary<string, int> bandejaVegetales = new Dictionary<string, int>();
 
     private PlayerInput myInputs;
+    [SerializeField] private string playerID;
+
+    [Header("Feedbacks")]
+    [SerializeField] private MMF_Player _Campana;
+    [SerializeField] private MMF_Player _RecibirDinero;
+    [SerializeField] private MMF_Player _Error;
+    [SerializeField] private MMF_Player _Correct;
+
 
     private void Start()
     {
         InitializeBandeja();
 
         myInputs = GetComponent<PlayerInput>();
+        ActualizarInventario();
     }
 
     private void Update()
     {
+        _slider.value = inventorySO.Dinero;
         if (GameManager.gm.gameState == GameState.Pause)
             return;
-        actualizarBandejaTexto();
+
         if (myInputs.actions["Place Potatoe"].WasPressedThisFrame())
         {
             AddVegetal("papa", ref inventorySO.NumeroPapas);
@@ -53,14 +68,21 @@ public class InventarioTienda : MonoBehaviour
         {
             RestarVegetales();
         }
-        if (myInputs.actions["Empty Tray"].WasPressedThisFrame())
+        if (myInputs.actions["Skip"].WasPressedThisFrame())
         {
-            VaciarBandeja();
+            FindObjectOfType<NpcManager>().skipear(playerID);
+            _Campana.PlayFeedbacks();
         }
 
         dinero.text = inventorySO.Dinero.ToString() + "$";
     }
 
+    private void ActualizarInventario()
+    {
+        _CantidadNabos.text = "x" + inventorySO.NumeroNabos.ToString();
+        _CantidadRabanos.text = "x" + inventorySO.NumeroRabanos.ToString();
+        _CantidadPapas.text = "x" + inventorySO.NumeroPapas.ToString();
+    }
     private void InitializeBandeja()
     {
         bandejaVegetales.Add("papa", 0);
@@ -127,10 +149,7 @@ public class InventarioTienda : MonoBehaviour
             Destroy(child.gameObject);
         }
     }
-    private void actualizarBandejaTexto()
-    {
-        textoInventario.text = "Papas: " + bandejaVegetales["papa"] + "\nRábanos: " + bandejaVegetales["rábano"] + "\nNabos: " + bandejaVegetales["nabo"];
-    }
+
 
     private void RestarVegetales()
     {
@@ -140,15 +159,18 @@ public class InventarioTienda : MonoBehaviour
             inventorySO.NumeroPapas -= bandejaVegetales["papa"];
             inventorySO.NumeroRabanos -= bandejaVegetales["rábano"];
             inventorySO.NumeroNabos -= bandejaVegetales["nabo"];
-
+            _Campana.PlayFeedbacks();
+            _RecibirDinero.GetFeedbackOfType<MMF_FloatingText>().Value = "+" + (bandejaVegetales["papa"] * 20 + bandejaVegetales["rábano"] * 10 + bandejaVegetales["nabo"] * 5).ToString() + "$";
+            _RecibirDinero.PlayFeedbacks();
+            _Correct.PlayFeedbacks();
             NpcManager.instance.SiguienteNPC();
-            print("Pedido correcto");
+
         }
         else
         {
-            Debug.Log("No es el pedido correcto");
+            _Error.PlayFeedbacks();
         }
-
+        ActualizarInventario();
         VaciarBandeja();
     }
 }

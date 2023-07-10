@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8098d510f64a81b42b717126dc7d5be4, type: 3}
   m_Name: InventoryPlayer2
   m_EditorClassIdentifier: 
-  VegetalSeleccionado: 0
-  NumeroPapas: 99
-  NumeroRabanos: 99
-  NumeroNabos: 99
-  Dinero: 100
+  VegetalSeleccionado: 1
+  NumeroPapas: 8
+  NumeroRabanos: 3
+  NumeroNabos: 1
+  Dinero: 205

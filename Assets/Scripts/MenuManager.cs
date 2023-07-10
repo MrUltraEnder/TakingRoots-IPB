@@ -39,11 +39,11 @@ public class MenuManager : MonoBehaviour
     {
         inventoryScriptableObjectP1.Dinero = 0;
         inventoryScriptableObjectP2.Dinero = 0;
-        inventoryScriptableObjectP1.NumeroPapas = 0;
-        inventoryScriptableObjectP2.NumeroPapas = 0;
-        inventoryScriptableObjectP1.NumeroRabanos = 0;
-        inventoryScriptableObjectP2.NumeroRabanos = 0;
-        inventoryScriptableObjectP1.NumeroNabos = 0;
-        inventoryScriptableObjectP2.NumeroNabos = 0;
+        inventoryScriptableObjectP1.NumeroPapas = 5;
+        inventoryScriptableObjectP2.NumeroPapas = 5;
+        inventoryScriptableObjectP1.NumeroRabanos = 5;
+        inventoryScriptableObjectP2.NumeroRabanos = 5;
+        inventoryScriptableObjectP1.NumeroNabos = 5;
+        inventoryScriptableObjectP2.NumeroNabos = 5;
     }
 }

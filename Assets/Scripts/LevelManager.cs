@@ -7,12 +7,12 @@ public class LevelManager : MonoBehaviour
 {
     //create a singleton
     public static LevelManager lm;
-    public static int NumOfLevel = 0;
+    public static int NumOfLevel = 1;
     [SerializeField] public LevelSelector levelSelector;
 
     [Header("Debug")]
     [SerializeField] private bool activado = false;
-    [SerializeField] private int NumOfLevelActual = 0;
+    [SerializeField] private int NumOfLevelActual = 1;
     [SerializeField] private InventoryScriptableObject inventoryScriptableObjectP1;
     [SerializeField] private InventoryScriptableObject inventoryScriptableObjectP2;
 
@@ -31,13 +31,8 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        UIManager.uim.SetLapsCount(NumOfLevel + 1);
-        NumOfLevelActual = NumOfLevel;
-        if (activado)
-        {
-            activado = false;
-            SumLevel();
-        }
+
+        UIManager.uim.SetLapsCount(NumOfLevel);
 
     }
     public void SumLevel()
@@ -50,32 +45,21 @@ public class LevelManager : MonoBehaviour
         {
             SceneManager.LoadScene("WinP2");
         }
-        NumOfLevel++;
-        if (NumOfLevel == 3)
-        {
-            NumOfLevel = 0;
-            levelSelector.LoadTienda();
-        }
-        else
-        {
-
-            levelSelector.LoadLevel();
-        }
-
-        if (SceneManager.GetActiveScene().name != "Tienda")
+        if (GameManager.gm.gameState != GameState.Store)
         {
             NumOfLevel++;
         }
-        if (NumOfLevel == 3)
+        if (NumOfLevel > 3)
         {
-            NumOfLevel = 0;
+            NumOfLevel = 1;
             levelSelector.LoadTienda();
         }
         else
         {
-
             levelSelector.LoadLevel();
         }
+
+
     }
 
 }
